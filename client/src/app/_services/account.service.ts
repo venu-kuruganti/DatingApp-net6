@@ -12,13 +12,13 @@ export class AccountService {
   currentUser = signal<User | null>(null);
 
   login(model: any) {
-    console.log("In account service login");
-
+    
     return this.http.post<User>(this.baseUrl + 'account/login', model).pipe(
       map(user => {
         if (user) {
           localStorage.setItem('user', JSON.stringify(user));
           this.currentUser.set(user);
+          
         }
       })
     );
@@ -38,7 +38,7 @@ export class AccountService {
   }
 
   logout() {
-    console.log("In account.service.logout");
+    
     localStorage.removeItem('user');
     this.currentUser.set(null);
   }
