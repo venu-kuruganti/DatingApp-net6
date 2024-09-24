@@ -5,13 +5,15 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TitleCasePipe } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
 
 
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [FormsModule, BsDropdownModule, TitleCasePipe],
+  imports: [FormsModule, BsDropdownModule, TitleCasePipe, RouterModule],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css',
 })

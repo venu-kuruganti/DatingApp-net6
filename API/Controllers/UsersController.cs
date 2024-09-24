@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.DTOs;
 using API.Entities;
+using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,21 +20,27 @@ namespace API.Controllers;
 public class UsersController : BaseAPIController
 {
     private readonly DataContext _context;
+    private readonly IUserRepository repository;
+    private readonly IMapper mapper;
 
-    public UsersController(DataContext context)
+    public UsersController(DataContext context, IUserRepository _repository, IMapper _mapper)
     {
         _context = context; //Dependency Injection of DBContext class.
+        repository = _repository;
+        mapper = _mapper;
     }
 
-    [AllowAnonymous]
+  
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
     {
-        var users = await _context.Users.ToListAsync();
+        var users = await repository.GetUsersAsync();
 
-        if (users != null )
+        var usersToReturn = mapper.Map<IEnumerable<MemberDto>>(users);
+
+        if (usersToReturn != null )
         {
-            return Ok(users);
+            return Ok(usersToReturn);
         }
         else
         {
@@ -39,18 +48,19 @@ public class UsersController : BaseAPIController
         }
     }
 
-    [Authorize]
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<AppUser>> GetUser(int id)
-    {
-        var user = await _context.Users.FindAsync(id);
 
-        if (user == null)
+    [HttpGet("{username}")]
+    public async Task<ActionResult<MemberDto>> GetUser(string username)
+    {
+        var user = await repository.GetUserByUsernameAsync(username);
+        var userToReturn = mapper.Map<MemberDto>(user);
+
+        if (userToReturn == null)
         {
             return NotFound();
         }
 
-        return user;
+        return userToReturn;
     }
 }
 
