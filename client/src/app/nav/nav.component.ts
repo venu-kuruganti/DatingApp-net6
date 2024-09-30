@@ -24,8 +24,8 @@ export class NavComponent {
   private toastr: any = inject(ToastrService);
   login() {
     this.accountService.login(this.model).subscribe({
-      next: () => {this.router.navigateByUrl('/members') },
-      error: (error) => this.toastr.error(error.error)
+      next: () => this.router.navigateByUrl('/members'),
+      error: (error) =>   this.toastr.error(error.error)
     });
   }
 

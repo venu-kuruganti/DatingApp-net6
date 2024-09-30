@@ -4,12 +4,13 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NavComponent } from "./nav/nav.component";
 import { AccountService } from './_services/account.service';
 import { HomeComponent } from "./home/home.component";
+import { GalleryModule, GalleryComponent, ImageItem } from 'ng-gallery';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavComponent, HomeComponent, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, NavComponent, HomeComponent, RouterLink, RouterLinkActive, GalleryModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

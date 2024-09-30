@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RegisterComponent } from "../register/register.component";
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -15,11 +16,7 @@ export class HomeComponent {
   private toastr:any = inject(ToastrService);
   registerMode = false;
   users: any;
-
-  ngOnInit(): void {
-    this.getUsers();
-  }
-
+  baseUrl = environment.apiUrl;
 
   registerToggle(){    
     this.registerMode = !this.registerMode;
@@ -27,14 +24,6 @@ export class HomeComponent {
 
   cancelRegisterMode(event: boolean){
     this.registerMode = event;
-  }
-
-  getUsers() {
-    this.http.get('https://localhost:8080/API/Users').subscribe({
-      next: response => {this.users = response;},
-      error: error =>  this.toastr.error(error.error),
-      complete: () => console.log("Request has been completed!")
-    })
 
   }
 }
